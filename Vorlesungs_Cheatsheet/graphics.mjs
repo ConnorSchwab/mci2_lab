@@ -1,5 +1,7 @@
 import { initInteraction } from "./interactions.mjs";
 
+const canvas = document.getElementById("canvas");
+
 export function upath() {
   let upath = new Path2D();
   upath.moveTo(-2, -4.5);
@@ -37,10 +39,12 @@ export function upath() {
   return upath;
 }
 
-export function circlePath() {
-  let circle = new Path2D();
-  circle.arc(10, 10, 10, 0, Math.PI * 2);
-  return circle;
+export function circle(ctx, x, y, radius, fillStyle = "white") {
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, 2 * Math.PI);
+  ctx.fillStyle = fillStyle;
+  ctx.fill();
+  return ctx.getTransform();
 }
 
 export function path(
@@ -86,15 +90,6 @@ export function line(ctx, x1, y1, x2, y2, strokeStyle = "#fff", lineWidth = 1) {
 
   //draw line actually
   ctx.stroke();
-}
-
-export function circle(ctx, x, y, radius, fillStyle = "#fff") {
-  let startAngle = 0;
-  let endAngle = Math.PI * 2;
-  ctx.beginPath();
-  ctx.arc(x, y, radius, startAngle, endAngle);
-  ctx.fillStyle = fillStyle;
-  ctx.fill();
 }
 
 export function initGraphics(drawcallback, interactiveObjects) {

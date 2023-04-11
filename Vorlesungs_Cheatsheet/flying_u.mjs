@@ -1,44 +1,40 @@
 import * as G from "./graphics.mjs";
 
-export function flying_u(x, y) {
+export function flying_u(ctx1, x, y) {
+  const canvas = document.getElementById("canvas");
   let isTouched = false;
   let identifier = undefined;
   let transformationMatrix = undefined;
   let inverseTransMatrix = undefined;
   let angle = Math.PI;
   let scale = 10;
-  let resX = x;
-  let resY = y;
-  const canvas = document.getElementById("canvas");
+  let ballons = [];
+  let middlePoint = { x: canvas.width / 2, y: canvas.height / 2 };
+  let maxRadius = Math.min(canvas.width, canvas.height) / 2;
+
   let goingRight = Math.random() < 0.5;
   let goingDown = Math.random < 0.5;
   let speed = Math.random();
   let radius = 10;
 
-  const cPath = G.circlePath();
+  const cPath = G.circle(ctx1);
 
-  function draw(ctx) {
+  function createBalloons(level) {
+    for (let i = 0; i < level; i++) {
+      const xSpawn = middlePoint.x + (Math.random() - 0.5) * maxRadius;
+      const ySpawn = middlePoint.y + (Math.random() - 0.5) * maxRadius;
+      let radius = 10;
+      ballons.push({x: xSpawn, y: ySpawn, radius: radius});
+    }
+    return ballons;
+  }
+
+  function draw(ctx, x, y, radius) {
     if (isTouched) {
-      transformationMatrix = G.path(
-        ctx,
-        cPath,
-        resX,
-        resY,
-        angle,
-        scale,
-        "red"
-      );
+      transformationMatrix = G.circle(ctx, x, y, radius, "red");
       speed = Math.random();
     } else {
-      transformationMatrix = G.path(
-        ctx,
-        cPath,
-        resX,
-        resY,
-        Math.PI,
-        scale,
-        "white"
-      );
+      transformationMatrix = G.circle(ctx, x, y, radius, "white");
     }
     inverseTransMatrix = DOMMatrix.fromMatrix(transformationMatrix);
     inverseTransMatrix.invertSelf();
@@ -66,9 +62,9 @@ export function flying_u(x, y) {
   }
 
   setInterval(() => {
-    resX += speed;
-    resY += speed;
+    //resX += speed;
+    //resY += speed;
   }, 10);
 
-  return { draw, isInside, move, reset };
+  return { draw, isInside, move, reset , createBalloons };
 }
