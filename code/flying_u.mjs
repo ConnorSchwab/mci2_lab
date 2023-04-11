@@ -13,19 +13,32 @@ export function flying_u(x, y) {
   let goingRight = Math.random() < 0.5;
   let goingDown = Math.random < 0.5;
   let speed = Math.random();
-  let figureWidth = 3 * scale;
-  let figureHeightTop = 4 * scale;
-  let figureHeightBottom = 4.5 * scale;
+  let radius = 10;
 
-
-  const upath = G.upath();
+  const cPath = G.circlePath();
 
   function draw(ctx) {
     if (isTouched) {
-      transformationMatrix = G.path(ctx, upath, resX, resY, angle, scale, "red");
+      transformationMatrix = G.path(
+        ctx,
+        cPath,
+        resX,
+        resY,
+        angle,
+        scale,
+        "red"
+      );
       speed = Math.random();
     } else {
-      transformationMatrix = G.path(ctx, upath, resX, resY, Math.PI, scale, "white");
+      transformationMatrix = G.path(
+        ctx,
+        cPath,
+        resX,
+        resY,
+        Math.PI,
+        scale,
+        "white"
+      );
     }
     inverseTransMatrix = DOMMatrix.fromMatrix(transformationMatrix);
     inverseTransMatrix.invertSelf();
@@ -35,7 +48,7 @@ export function flying_u(x, y) {
     let localTouchPoint = inverseTransMatrix.transformPoint(
       new DOMPoint(tx, ty)
     );
-    isTouched = ctx.isPointInPath(upath, localTouchPoint.x, localTouchPoint.y);
+    isTouched = ctx.isPointInPath(cPath, localTouchPoint.x, localTouchPoint.y);
     if (isTouched) {
       identifier = ti;
     }
@@ -51,43 +64,11 @@ export function flying_u(x, y) {
       identifier = undefined;
     }
   }
-  
-  
+
   setInterval(() => {
-    let right = false;
-    let left = false;
-    let top = false;
-    let bottom = false;
-    
-    if (isTouched) {
-      resX = x;
-      resY = y;
-    } else {
-      if (resX >= canvas.width - figureWidth) {
-        goingRight = false;
-      } else if (resX <= 0 + figureWidth) {
-        goingRight = true;
-      }
-      if (resY >= canvas.height - figureHeightBottom) {
-        goingDown = false;
-      } else if (resY <= 0 + figureHeightTop) {
-        goingDown = true;
-      }
-  
-      if (goingRight) {
-        resX += speed;
-      } else {
-        resX -= speed;
-      }
-  
-      if (goingDown) {
-        resY += speed;
-      } else {
-        resY -= speed;
-      }
-    }
+    resX += speed;
+    resY += speed;
   }, 10);
-  
 
   return { draw, isInside, move, reset };
 }
