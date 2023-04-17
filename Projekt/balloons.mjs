@@ -1,3 +1,5 @@
+
+
 export function balloon(x, y, radius) {
   let transform = undefined;
   let inverseTransMatrix = undefined;
@@ -5,6 +7,7 @@ export function balloon(x, y, radius) {
   let getPath = undefined;
   let isTouched = false;
   let deleted = false;
+  
 
   function draw(ctx) {
     if (!deleted){
@@ -38,6 +41,33 @@ export function balloon(x, y, radius) {
     console.log(`isInside: ${isTouched}`);
   }
 
+  function move(o){
+    
+    console.log(o);
+    switch(o){
+      case 1:{
+        x += 1.5;
+        y -= 0.2;
+        break;
+      }
+        
+      case 2:{
+        y -= 0.5;
+        break;
+      }
+        
+      case 3:{
+        x -= 1.5;
+        y -= 0.5;
+        break;
+      }
+        
+      default:
+        y -= 0.5;
+    }
+  }
+
+
   function reset(ti) {
     if (ti === identifier) {
       isTouched = false;
@@ -49,5 +79,5 @@ export function balloon(x, y, radius) {
     return deleted;
   }
 
-  return { draw, isInside ,reset, isDeleted };
+  return { draw, isInside ,reset, isDeleted, move };
 }
