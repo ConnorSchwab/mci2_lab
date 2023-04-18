@@ -1,4 +1,6 @@
+import { cannon } from "./cannon.mjs";
 import { initInteraction } from "./touches.mjs";
+
 
 
 function circle(ctx, x, y, radius, fillStyle){
@@ -28,6 +30,7 @@ export function initGraphics(drawcallback, interactiveObjects) {
     ctx.resetTransform();
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
+
     drawcallback(ctx, deltaTime);
     ctx.font = "20px Arial";
 
@@ -36,6 +39,9 @@ export function initGraphics(drawcallback, interactiveObjects) {
       ctx.fillStyle = "black";
       ctx.fillText(`id: ${identifier}`, x + 40, y);
     });
+
+    
+    
     window.requestAnimationFrame(mainloop);
   }
   mainloop();

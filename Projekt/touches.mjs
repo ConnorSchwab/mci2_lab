@@ -21,6 +21,9 @@ export function initInteraction(ctx, interactiveObjects) {
         for (let t of evt.changedTouches) {
             console.log(`move ${t.identifier} at ${t.pageX}, ${t.pageY}`);
             touches[t.identifier] = { x: t.pageX, y: t.pageY };
+            for (let io of interactiveObjects) {
+                io.update(t.identifier, t.pageX, t.pageY);
+            }
         }
     });
 
