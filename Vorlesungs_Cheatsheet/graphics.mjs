@@ -1,8 +1,10 @@
 import { initInteraction } from "./interactions.mjs";
 
-export function upath(){
-  let upath = new Path2D;
-  upath.moveTo(-2,-4.5);
+const canvas = document.getElementById("canvas");
+
+export function upath() {
+  let upath = new Path2D();
+  upath.moveTo(-2, -4.5);
   upath.lineTo(-1.5, -4);
   upath.lineTo(-1.5, -2);
   upath.lineTo(-2, -1);
@@ -37,10 +39,28 @@ export function upath(){
   return upath;
 }
 
-export function path(ctx, pth, x,y,angle,sc = 10, fillStyle="#f00", strokeStyle="#f00", lineWidth=0.1){
+export function circle(ctx, x, y, radius, fillStyle = "white") {
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, 2 * Math.PI);
+  ctx.fillStyle = fillStyle;
+  ctx.fill();
+  return ctx.getTransform();
+}
+
+export function path(
+  ctx,
+  pth,
+  x,
+  y,
+  angle,
+  sc = 10,
+  fillStyle = "#f00",
+  strokeStyle = "#f00",
+  lineWidth = 0.1
+) {
   ctx.save();
-  ctx.translate(x,y);
-  ctx.scale(sc,sc);
+  ctx.translate(x, y);
+  ctx.scale(sc, sc);
   ctx.rotate(angle);
 
   let m = ctx.getTransform();
@@ -54,8 +74,6 @@ export function path(ctx, pth, x,y,angle,sc = 10, fillStyle="#f00", strokeStyle=
 
   return m;
 }
-
-
 
 export function line(ctx, x1, y1, x2, y2, strokeStyle = "#fff", lineWidth = 1) {
   ctx.lineWidth = lineWidth;
@@ -74,18 +92,7 @@ export function line(ctx, x1, y1, x2, y2, strokeStyle = "#fff", lineWidth = 1) {
   ctx.stroke();
 }
 
-export function circle(ctx, x, y, radius, fillStyle = '#fff') {
-  let startAngle = 0;
-  let endAngle = Math.PI * 2;
-  ctx.beginPath();
-  ctx.arc(x, y, radius, startAngle, endAngle);
-  ctx.fillStyle = fillStyle;
-  ctx.fill();
-}
-
 export function initGraphics(drawcallback, interactiveObjects) {
-
-  
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
 
@@ -104,17 +111,15 @@ export function initGraphics(drawcallback, interactiveObjects) {
     const deltaTime = new Date() - startTime;
     ctx.resetTransform();
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    
 
     drawcallback(ctx, deltaTime);
     ctx.font = "20px Arial";
 
-
-    forEachTouchFunction((identifier, x, y) =>{
-      circle(ctx, x, y, 30, 'red');
+    forEachTouchFunction((identifier, x, y) => {
+      circle(ctx, x, y, 30, "red");
       ctx.fillStyle = "white";
-      ctx.fillText(`id: ${identifier}`, x+40, y);
-    })
+      ctx.fillText(`id: ${identifier}`, x + 40, y);
+    });
     window.requestAnimationFrame(mainloop);
   }
   mainloop();
