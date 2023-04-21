@@ -1,3 +1,4 @@
+export let score = 0;
 export function balloon(x, y, radius, direction) {
   let transform = undefined;
   let inverseTransMatrix = undefined;
@@ -6,46 +7,47 @@ export function balloon(x, y, radius, direction) {
   let isTouched = false;
   let deleted = false;
   let directionTimer = null;
+  let balloonWidth = radius * 2;
+  let balloonHeight = radius * 3;
 
   function draw(ctx) {
-      if (!deleted) {
-        const path = new Path2D();
-        path.ellipse(x, y, radius * 2, radius * 3, 0, 0, 2 * Math.PI);
-        // Add the balloon string line segment
-        path.moveTo(x, y + radius * 3);
-        path.lineTo(x, y + radius * 4.5);
-        path.lineTo(x - radius / 4, y + radius * 4.8);
-        path.lineTo(x, y + radius * 5.1);
-        path.lineTo(x + radius / 4, y + radius * 4.8);
-        path.lineTo(x, y + radius * 4.5);
-        ctx.fillStyle = "#A03B3F";
-        ctx.strokeStyle = "#FF000A";
-        ctx.fill(path);
-        ctx.stroke(path);
-        transform = ctx.getTransform();
-        getPath = path;
-      }
-      
-    
+    if (!deleted) {
+      const path = new Path2D();
+      path.ellipse(x, y, balloonWidth, balloonHeight, 0, 0, 2 * Math.PI);
+      // Add the balloon string line segment
+      path.moveTo(x, y + radius * 3);
+      path.lineTo(x, y + radius * 4.5);
+      path.lineTo(x - radius / 4, y + radius * 4.8);
+      path.lineTo(x, y + radius * 5.1);
+      path.lineTo(x + radius / 4, y + radius * 4.8);
+      path.lineTo(x, y + radius * 4.5);
+      ctx.fillStyle = "#A03B3F";
+      ctx.strokeStyle = "#FF000A";
+      ctx.fill(path);
+      ctx.stroke(path);
+      transform = ctx.getTransform();
+      getPath = path;
+    }
 
     inverseTransMatrix = DOMMatrix.fromMatrix(transform);
     inverseTransMatrix.invertSelf();
   }
 
-  function isInside(ctx, ti, tx, ty) {
-    let localTouchPoint = inverseTransMatrix.transformPoint(
-      new DOMPoint(tx, ty)
-    );
-    isTouched = ctx.isPointInPath(
-      getPath,
-      localTouchPoint.x,
-      localTouchPoint.y
-    );
-    if (isTouched) {
-      identifier = ti;
-    }
+  function isInside(px, py) {
+    //distances between center of balloon and projectile
+    let dx = px - x;
+    let dy = py - y;
+    let distance = Math.sqrt(dx * dx + dy * dy);
 
-    console.log(`isInside: ${isTouched}`);
+    //half of the length of the diagonal of the bounding rectangle
+    let boundingRadius =
+      Math.sqrt(balloonWidth * balloonWidth + balloonHeight * balloonHeight) /
+      2;
+
+    if (distance <= boundingRadius) {
+      deleted = true;
+      updateScore();
+    }
   }
 
   function move() {
@@ -91,7 +93,15 @@ export function balloon(x, y, radius, direction) {
     return deleted;
   }
 
-  function update(){}
+  function updateScore() {
+    score += 1;
+  }
 
-  return { draw, isInside, reset, isDeleted, move, update};
+  function update() {}
+  function getCoordinates() {
+    let dummy = { b: false };
+    return dummy;
+  }
+
+  return { draw, isInside, reset, isDeleted, move, update, getCoordinates };
 }

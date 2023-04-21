@@ -1,7 +1,10 @@
-import { cannon } from "./cannon.mjs";
-import { initInteraction } from "./touches.mjs";
 
+import * as I from "./touches.mjs";
+import {startButton} from "./startButton.mjs"
 
+export let checkTouched = undefined;
+export let currentTouchX = undefined;
+export let currentTouchY = undefined;
 
 function circle(ctx, x, y, radius, fillStyle){
   ctx.beginPath();
@@ -14,7 +17,7 @@ export function initGraphics(drawcallback, interactiveObjects) {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
 
-  let forEachTouchFunction = initInteraction(ctx, interactiveObjects);
+  let forEachTouchFunction = I.initInteraction(ctx, interactiveObjects);
   function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -33,11 +36,20 @@ export function initGraphics(drawcallback, interactiveObjects) {
 
     drawcallback(ctx, deltaTime);
     ctx.font = "20px Arial";
-
+    if (I.isTouched){
+      checkTouched = true;
+    }
+    else {
+      checkTouched = false;
+    }
     forEachTouchFunction((identifier, x, y) => {
+      currentTouchX = x;
+      currentTouchY = y;
       circle(ctx, x, y, 30, "red");
       ctx.fillStyle = "black";
       ctx.fillText(`id: ${identifier}`, x + 40, y);
+      startButton().isInside(identifier, x, y);
+      
     });
 
     
@@ -46,3 +58,5 @@ export function initGraphics(drawcallback, interactiveObjects) {
   }
   mainloop();
 }
+
+
