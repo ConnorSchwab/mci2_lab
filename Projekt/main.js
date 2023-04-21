@@ -40,7 +40,9 @@ window.onload = function () {
 
   function Replay() {
     document.getElementById('popup').style.display = "none";
-    interactiveObjects.reset();
+    for (let i = 0; i < interactiveObjects.length; i++) {
+      interactiveObjects[i].reset();
+    }
   }
 
   function generateButton(text, id) {
