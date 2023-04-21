@@ -2,10 +2,12 @@ import { balloon /*score*/ } from "./balloons.mjs";
 import * as G from "./graphics.mjs";
 import { cannon } from "./cannon.mjs";
 import { projectiles } from "./projectiles.mjs";
+import { startButton, gotClicked } from "./startButton.mjs";
 import createUIOverlay from "./uiOverlay.js";
 
 
 let spawnProjectiles = undefined;
+let firstTime = true;
 
 window.onload = function () {
   console.log("Hello");
@@ -22,11 +24,14 @@ window.onload = function () {
 
   let interactiveObjects = [];
   let balloons = [];
-  let levels = 5;
+  let levels = 8;
+
 
   let overlay = createUIOverlay(ctx, canvas);
 
   G.initGraphics(draw, interactiveObjects);
+
+  console.log(gotClicked);
 
   let projectileX = canvas.width / 2;
   let projectileY = canvas.height - 30;
@@ -91,12 +96,21 @@ window.onload = function () {
     return balloons;
   }
 
-
   function getProjectileOffset(checkValue) {
     if (!checkValue) {
-      return cannonX + Math.cos(getProjectileAtan(G.currentTouchX, G.currentTouchY)) * 8 * cannonScale;
+      return (
+        cannonX +
+        Math.cos(getProjectileAtan(G.currentTouchX, G.currentTouchY)) *
+        7 *
+        cannonScale
+      );
     } else {
-      return cannonY + Math.sin(getProjectileAtan(G.currentTouchX, G.currentTouchY)) * 8 * cannonScale;
+      return (
+        cannonY +
+        Math.sin(getProjectileAtan(G.currentTouchX, G.currentTouchY)) *
+        7 *
+        cannonScale
+      );
     }
   }
   function createProjectile() {
@@ -121,8 +135,12 @@ window.onload = function () {
     }
   }
 
-  spawn(levels);
+  function drawStartButton(ctx) {
+    let initStartButton = startButton();
+    initStartButton.draw(ctx);
+  }
 
+  spawn(levels);
   setInterval(() => {
     for (let i = 0; i < balloons.length; i++) {
       balloons[i].direction = getRandomDirection();
@@ -137,43 +155,44 @@ window.onload = function () {
   }
 
   function draw(ctx, deltaTime) {
-    spawnProjectiles = G.checkTouched;
-    console.log(score);
-    //overlay.setScore(score);
-    createProjectile();
-    checkForProjectiles();
-    // load projetiles as InterObjects and free the projectilesArray
+    if (!gotClicked) {
+      drawStartButton(ctx);
+    } else {
+      spawnProjectiles = G.checkTouched;
+      //console.log(score);
+      createProjectile();
+      checkForProjectiles();
+      // load projetiles as InterObjects and free the projectilesArray
+      overlay.draw();
 
-    overlay.draw();
-
-    for (let i = 0; i < interactiveObjects.length; i++) {
-      if (interactiveObjects[i].getPosition && interactiveObjects[i].getPosition().y < 0) {
-        interactiveObjects.splice(i, 1);
-        overlay.setLife();
-      }
-      //!interactiveObjects[i].isDeleted()
-      if (interactiveObjects[i]) {
-        interactiveObjects[i].draw(ctx);
-        interactiveObjects[i].move();
-        let projectilePosition = interactiveObjects[i].getCoordinates();
-        if (projectilePosition.b) {
-          for (let j = 0; j < interactiveObjects.length; j++) {
-            let deleted = interactiveObjects[j].isInside(projectilePosition.x, projectilePosition.y);
-            if (deleted) {
-              interactiveObjects.splice(j, 1);
-              score++;
-              overlay.setScore(score);
+      for (let i = 0; i < interactiveObjects.length; i++) {
+        if (interactiveObjects[i].getPosition && interactiveObjects[i].getPosition().y < 0) {
+          interactiveObjects.splice(i, 1);
+          overlay.setLife();
+        }
+        //!interactiveObjects[i].isDeleted()
+        if (interactiveObjects[i]) {
+          interactiveObjects[i].draw(ctx);
+          interactiveObjects[i].move();
+          let projectilePosition = interactiveObjects[i].getCoordinates();
+          if (projectilePosition.b) {
+            for (let j = 0; j < interactiveObjects.length; j++) {
+              let deleted = interactiveObjects[j].isInside(projectilePosition.x, projectilePosition.y);
+              if (deleted) {
+                interactiveObjects.splice(j, 1);
+                score++;
+                overlay.setScore(score);
+              }
             }
           }
+
+        } else {
+          interactiveObjects.splice(i, 1);
         }
 
-      } else {
-        interactiveObjects.splice(i, 1);
       }
 
+
+
     }
-
-
-
-  }
-};
+  };

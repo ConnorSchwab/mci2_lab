@@ -50,8 +50,13 @@ export function initInteraction(ctx, interactiveObjects) {
       // Übergabe an Callback: t: identifier, x/y-Koordinaten
       cb(t, touches[t].x, touches[t].y);
     }
-  };
+
+  }
 }
+
+
+
+
 
 /* let cannonX = canvas.width / 2;
     let cannonY = canvas.height - 30; // move to the tip of the cannon
