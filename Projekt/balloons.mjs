@@ -1,7 +1,7 @@
 
 export let score = 0;
 export function balloon(x, y, radius, direction) {
-
+  let canvas = document.getElementById("canvas");
   let transform = undefined;
   let inverseTransMatrix = undefined;
   let identifier = undefined;
@@ -109,9 +109,17 @@ export function balloon(x, y, radius, direction) {
     return dummy;
   }
 
+  function outOfBounds() {
+    if (x + balloonWidth / 2 < 0 || x - balloonWidth / 2 > canvas.width || y + balloonHeight / 2 > canvas.height || y + balloonHeight + 5 < 0) {
+      deleted = true;
+      return true;
+    }
+    else return false;
+  }
+
   function getPosition() {
     return { x, y };
   }
 
-  return { draw, isInside, reset, isDeleted, move, update, getCoordinates, getPosition };
+  return { draw, isInside, reset, isDeleted, move, update, getCoordinates, getPosition, outOfBounds };
 }

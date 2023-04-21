@@ -3,10 +3,11 @@ import * as G from "./graphics.mjs";
 import { cannon } from "./cannon.mjs";
 import { projectiles } from "./projectiles.mjs";
 import { startButton, gotClicked } from "./startButton.mjs";
+import { startButton, gotClicked } from "./startButton.mjs";
 import createUIOverlay from "./uiOverlay.js";
 
-
 let spawnProjectiles = undefined;
+let firstTime = true;
 let firstTime = true;
 
 window.onload = function () {
@@ -165,6 +166,11 @@ window.onload = function () {
     initStartButton.draw(ctx);
   }
 
+  function drawStartButton(ctx) {
+    let initStartButton = startButton();
+    initStartButton.draw(ctx);
+  }
+
   spawn(levels);
   setInterval(() => {
     for (let i = 0; i < balloons.length; i++) {
@@ -183,12 +189,13 @@ window.onload = function () {
     if (!gotClicked) {
       drawStartButton(ctx);
     } else {
+      overlay.draw();
+      overlay.setScore(score);
       spawnProjectiles = G.checkTouched;
       //console.log(score);
       createProjectile();
       checkForProjectiles();
       // load projetiles as InterObjects and free the projectilesArray
-      overlay.draw();
 
       for (let i = 0; i < interactiveObjects.length; i++) {
         if (interactiveObjects[i].getPosition && interactiveObjects[i].getPosition().y < 0) {

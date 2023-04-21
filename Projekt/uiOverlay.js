@@ -5,8 +5,8 @@ function createUIOverlay(ctx, cnv) {
     let life = 3;
     let level = 1;
 
-    function setScore(newPoints) {
-        score = newPoints;
+    function setScore(points) {
+        score = points;
     }
 
     function resetScore() {

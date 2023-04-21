@@ -15,6 +15,8 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
     projectilePath.moveTo(-0.3, 0);
     projectilePath.lineTo(-0.3, 2);
     projectilePath.lineTo(0.3, 2);
+    projectilePath.lineTo(-0.3, 2);
+    projectilePath.lineTo(0.3, 2);
     projectilePath.lineTo(0.3, 0);
     projectilePath.lineTo(0, -1);
     projectilePath.lineTo(-0.3, 0);
@@ -44,6 +46,7 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
   }
 
   function update() { }
+  function outOfBounds() { return false; }
   function isInside() { }
   function getPosition() {
     return { x, y };
@@ -66,5 +69,5 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
     }
   }
 
-  return { draw, update, isDeleted, move, isInside, reset, getCoordinates, getPosition };
+  return { draw, update, isDeleted, move, isInside, reset, getCoordinates, outOfBounds, getPosition };
 }
