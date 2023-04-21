@@ -154,25 +154,30 @@ window.onload = function () {
     if (!gotClicked) {
       drawStartButton(ctx);
     } else {
+      overlay.draw();
+      overlay.setScore(score);
       spawnProjectiles = G.checkTouched;
       //console.log(score);
       createProjectile();
       checkForProjectiles();
       // load projetiles as InterObjects and free the projectilesArray
 
-      overlay.draw();
-
       for (let i = 0; i < interactiveObjects.length; i++) {
         if (!interactiveObjects[i].isDeleted()) {
-          interactiveObjects[i].draw(ctx);
-          interactiveObjects[i].move();
-          let projectilePosition = interactiveObjects[i].getCoordinates();
-          if (projectilePosition.b) {
-            for (let j = 0; j < interactiveObjects.length; j++) {
-              interactiveObjects[j].isInside(
-                projectilePosition.x,
-                projectilePosition.y
-              );
+          if (interactiveObjects[i].outOfBounds()) {
+            interactiveObjects.splice(i, 1);
+            overlay.setLife();
+          } else {
+            interactiveObjects[i].draw(ctx);
+            interactiveObjects[i].move();
+            let projectilePosition = interactiveObjects[i].getCoordinates();
+            if (projectilePosition.b) {
+              for (let j = 0; j < interactiveObjects.length; j++) {
+                interactiveObjects[j].isInside(
+                  projectilePosition.x,
+                  projectilePosition.y
+                );
+              }
             }
           }
         } else {

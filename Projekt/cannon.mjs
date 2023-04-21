@@ -49,6 +49,7 @@ export function cannon(ctx) {
   function isInside() {}
   function isDeleted() {return false;}
   function reset() {}
+  function outOfBounds(){return false;}
 
   function getCannonAngle(){
     return cannonAngle;
@@ -66,5 +67,5 @@ export function cannon(ctx) {
 
   const projectileObj = projectiles(ctx, transform);
 
-  return { draw, update, isDeleted, move, isInside, reset, getCannonAngle, getCoordinates };
+  return { draw, update, isDeleted, move, isInside, reset, getCannonAngle, getCoordinates, outOfBounds };
 }

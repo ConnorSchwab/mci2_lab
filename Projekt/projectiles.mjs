@@ -43,6 +43,7 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
   }
 
   function update() {}
+  function outOfBounds(){return false;}
   function isInside() {}
   function isDeleted() {
     if (
@@ -56,5 +57,5 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
   }
   function reset() {}
 
-  return { draw, update, isDeleted, move, isInside, reset, getCoordinates};
+  return { draw, update, isDeleted, move, isInside, reset, getCoordinates, outOfBounds};
 }

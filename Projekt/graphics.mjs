@@ -45,9 +45,9 @@ export function initGraphics(drawcallback, interactiveObjects) {
     forEachTouchFunction((identifier, x, y) => {
       currentTouchX = x;
       currentTouchY = y;
-      circle(ctx, x, y, 30, "red");
+      /*circle(ctx, x, y, 30, "red");
       ctx.fillStyle = "black";
-      ctx.fillText(`id: ${identifier}`, x + 40, y);
+      ctx.fillText(`id: ${identifier}`, x + 40, y);*/
       startButton().isInside(identifier, x, y);
       
     });
