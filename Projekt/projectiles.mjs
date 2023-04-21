@@ -34,16 +34,19 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
     currentX += velocityX;
     currentY += velocityY;
   }
-  function getCoordinates(){
+  function getCoordinates() {
     let tipX = currentX + Math.cos(projectileAngle);
-    let tipY = currentY + Math.sin(projectileAngle)* (-1 * scale);
+    let tipY = currentY + Math.sin(projectileAngle) * (-1 * scale);
 
-    let coordinates = {x: tipX, y:tipY, b: true};
+    let coordinates = { x: tipX, y: tipY, b: true };
     return coordinates;
   }
 
-  function update() {}
-  function isInside() {}
+  function update() { }
+  function isInside() { }
+  function getPosition() {
+    return { x, y };
+  }
   function isDeleted() {
     if (
       currentX >= canvas.width + scale ||
@@ -54,7 +57,7 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
     }
     return false;
   }
-  function reset() {}
+  function reset() { }
 
-  return { draw, update, isDeleted, move, isInside, reset, getCoordinates};
+  return { draw, update, isDeleted, move, isInside, reset, getCoordinates, getPosition };
 }

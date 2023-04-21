@@ -5,7 +5,7 @@ function createUIOverlay(ctx, cnv) {
     let life = 3;
 
     function setScore(newPoints) {
-        score += newPoints;
+        score = newPoints;
     }
 
     function resetScore() {
@@ -13,7 +13,12 @@ function createUIOverlay(ctx, cnv) {
     }
 
     function setLife() {
-        life -= 1;
+        if (life > 0) {
+            life -= 1;
+        }
+        else {
+            return life;
+        }
     }
 
     function draw() {

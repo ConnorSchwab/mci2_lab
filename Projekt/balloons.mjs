@@ -1,5 +1,7 @@
+
 export let score = 0;
 export function balloon(x, y, radius, direction) {
+
   let transform = undefined;
   let inverseTransMatrix = undefined;
   let identifier = undefined;
@@ -9,6 +11,7 @@ export function balloon(x, y, radius, direction) {
   let directionTimer = null;
   let balloonWidth = radius * 2;
   let balloonHeight = radius * 3;
+
 
   function draw(ctx) {
     if (!deleted) {
@@ -46,8 +49,9 @@ export function balloon(x, y, radius, direction) {
 
     if (distance <= boundingRadius) {
       deleted = true;
-      updateScore();
+      //updateScore();
     }
+    return deleted;
   }
 
   function move() {
@@ -97,11 +101,17 @@ export function balloon(x, y, radius, direction) {
     score += 1;
   }
 
-  function update() {}
+
+  function update() { }
+
   function getCoordinates() {
     let dummy = { b: false };
     return dummy;
   }
 
-  return { draw, isInside, reset, isDeleted, move, update, getCoordinates };
+  function getPosition() {
+    return { x, y };
+  }
+
+  return { draw, isInside, reset, isDeleted, move, update, getCoordinates, getPosition };
 }

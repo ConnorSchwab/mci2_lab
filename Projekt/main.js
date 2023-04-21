@@ -1,4 +1,4 @@
-import { balloon, score } from "./balloons.mjs";
+import { balloon /*score*/ } from "./balloons.mjs";
 import * as G from "./graphics.mjs";
 import { cannon } from "./cannon.mjs";
 import { projectiles } from "./projectiles.mjs";
@@ -17,6 +17,8 @@ window.onload = function () {
   let frequency = 500;
   let projectilesArray = [];
   let projectileAngle = undefined;
+
+  let score = 0;
 
   let interactiveObjects = [];
   let balloons = [];
@@ -137,6 +139,7 @@ window.onload = function () {
   function draw(ctx, deltaTime) {
     spawnProjectiles = G.checkTouched;
     console.log(score);
+    //overlay.setScore(score);
     createProjectile();
     checkForProjectiles();
     // load projetiles as InterObjects and free the projectilesArray
@@ -144,18 +147,33 @@ window.onload = function () {
     overlay.draw();
 
     for (let i = 0; i < interactiveObjects.length; i++) {
-      if (!interactiveObjects[i].isDeleted()) {
+      if (interactiveObjects[i].getPosition && interactiveObjects[i].getPosition().y < 0) {
+        interactiveObjects.splice(i, 1);
+        overlay.setLife();
+      }
+      //!interactiveObjects[i].isDeleted()
+      if (interactiveObjects[i]) {
         interactiveObjects[i].draw(ctx);
         interactiveObjects[i].move();
         let projectilePosition = interactiveObjects[i].getCoordinates();
         if (projectilePosition.b) {
           for (let j = 0; j < interactiveObjects.length; j++) {
-            interactiveObjects[j].isInside(projectilePosition.x, projectilePosition.y);
+            let deleted = interactiveObjects[j].isInside(projectilePosition.x, projectilePosition.y);
+            if (deleted) {
+              interactiveObjects.splice(j, 1);
+              score++;
+              overlay.setScore(score);
+            }
           }
         }
+
       } else {
         interactiveObjects.splice(i, 1);
       }
+
     }
+
+
+
   }
 };
