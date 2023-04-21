@@ -2,9 +2,10 @@ import { balloon, score } from "./balloons.mjs";
 import * as G from "./graphics.mjs";
 import { cannon } from "./cannon.mjs";
 import { projectiles } from "./projectiles.mjs";
-
+import { startButton, gotClicked } from "./startButton.mjs";
 
 let spawnProjectiles = undefined;
+let firstTime = true;
 
 window.onload = function () {
   console.log("Hello");
@@ -19,9 +20,11 @@ window.onload = function () {
 
   let interactiveObjects = [];
   let balloons = [];
-  let levels = 5;
+  let levels = 8;
 
   G.initGraphics(draw, interactiveObjects);
+
+  console.log(gotClicked);
 
   let projectileX = canvas.width / 2;
   let projectileY = canvas.height - 30;
@@ -86,12 +89,21 @@ window.onload = function () {
     return balloons;
   }
 
-
   function getProjectileOffset(checkValue) {
     if (!checkValue) {
-      return cannonX + Math.cos(getProjectileAtan(G.currentTouchX, G.currentTouchY)) * 8 *cannonScale;
+      return (
+        cannonX +
+        Math.cos(getProjectileAtan(G.currentTouchX, G.currentTouchY)) *
+          7 *
+          cannonScale
+      );
     } else {
-      return cannonY + Math.sin(getProjectileAtan(G.currentTouchX, G.currentTouchY)) * 8 *  cannonScale;
+      return (
+        cannonY +
+        Math.sin(getProjectileAtan(G.currentTouchX, G.currentTouchY)) *
+          7 *
+          cannonScale
+      );
     }
   }
   function createProjectile() {
@@ -116,8 +128,12 @@ window.onload = function () {
     }
   }
 
-  spawn(levels);
+  function drawStartButton(ctx) {
+    let initStartButton = startButton();
+    initStartButton.draw(ctx);
+  }
 
+  spawn(levels);
   setInterval(() => {
     for (let i = 0; i < balloons.length; i++) {
       balloons[i].direction = getRandomDirection();
@@ -132,24 +148,31 @@ window.onload = function () {
   }
 
   function draw(ctx, deltaTime) {
-    spawnProjectiles = G.checkTouched;
-    console.log(score);
-    createProjectile();
-    checkForProjectiles();
-    // load projetiles as InterObjects and free the projectilesArray
+    if (!gotClicked) {
+      drawStartButton(ctx);
+    } else {
+      spawnProjectiles = G.checkTouched;
+      //console.log(score);
+      createProjectile();
+      checkForProjectiles();
+      // load projetiles as InterObjects and free the projectilesArray
 
-    for (let i = 0; i < interactiveObjects.length; i++) {
-      if (!interactiveObjects[i].isDeleted()) {
-        interactiveObjects[i].draw(ctx);
-        interactiveObjects[i].move();
-        let projectilePosition = interactiveObjects[i].getCoordinates();
-        if (projectilePosition.b){
-          for (let j = 0; j < interactiveObjects.length; j++){
-            interactiveObjects[j].isInside(projectilePosition.x, projectilePosition.y);
+      for (let i = 0; i < interactiveObjects.length; i++) {
+        if (!interactiveObjects[i].isDeleted()) {
+          interactiveObjects[i].draw(ctx);
+          interactiveObjects[i].move();
+          let projectilePosition = interactiveObjects[i].getCoordinates();
+          if (projectilePosition.b) {
+            for (let j = 0; j < interactiveObjects.length; j++) {
+              interactiveObjects[j].isInside(
+                projectilePosition.x,
+                projectilePosition.y
+              );
+            }
           }
+        } else {
+          interactiveObjects.splice(i, 1);
         }
-      } else {
-        interactiveObjects.splice(i, 1);
       }
     }
   }

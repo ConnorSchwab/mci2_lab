@@ -12,8 +12,8 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
   function draw(ctx) {
     const projectilePath = new Path2D();
     projectilePath.moveTo(-0.3, 0);
-    projectilePath.lineTo(-0.3, 3);
-    projectilePath.lineTo(0.3, 3);
+    projectilePath.lineTo(-0.3, 2);
+    projectilePath.lineTo(0.3, 2);
     projectilePath.lineTo(0.3, 0);
     projectilePath.lineTo(0, -1);
     projectilePath.lineTo(-0.3, 0);
