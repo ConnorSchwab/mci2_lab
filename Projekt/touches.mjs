@@ -48,4 +48,37 @@ export function initInteraction(ctx, interactiveObjects) {
     }
 
 
+<<<<<<< Updated upstream
 }
+=======
+      for (let io of interactiveObjects) {
+        io.update(t.identifier, t.pageX, t.pageY);
+      }
+    }
+  });
+
+  canvas.addEventListener("touchend", (evt) => {
+    evt.preventDefault();
+
+    for (let t of evt.changedTouches) {
+      isTouched = false;
+      //console.log(`end ${t.identifier} at ${t.pageX}, ${t.pageY}`);
+      delete touches[t.identifier];
+      for (let io of interactiveObjects) {
+        io.reset(t.identifier);
+      }
+    }
+  });
+
+  // cb (übergebene Funktion): Aufruf für jeden Touch-Punkt
+  return (cb) => {
+    // touches ist Object; for X of Object: X: ist Attribut
+    for (let t in touches) {
+      // Übergabe an Callback: t: identifier, x/y-Koordinaten
+      cb(t, touches[t].x, touches[t].y);
+    }
+  };
+}
+
+
+>>>>>>> Stashed changes
