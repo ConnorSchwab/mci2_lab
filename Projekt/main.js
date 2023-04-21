@@ -3,6 +3,7 @@ import * as G from "./graphics.mjs";
 import { cannon } from "./cannon.mjs";
 import { projectiles } from "./projectiles.mjs";
 import { startButton, gotClicked } from "./startButton.mjs";
+import createUIOverlay from "./uiOverlay.js";
 
 let spawnProjectiles = undefined;
 let firstTime = true;
@@ -20,7 +21,9 @@ window.onload = function () {
 
   let interactiveObjects = [];
   let balloons = [];
-  let levels = 8;
+  let levels = 5;
+
+  let overlay = createUIOverlay(ctx, canvas);
 
   G.initGraphics(draw, interactiveObjects);
 
@@ -156,6 +159,8 @@ window.onload = function () {
       createProjectile();
       checkForProjectiles();
       // load projetiles as InterObjects and free the projectilesArray
+
+      overlay.draw();
 
       for (let i = 0; i < interactiveObjects.length; i++) {
         if (!interactiveObjects[i].isDeleted()) {
