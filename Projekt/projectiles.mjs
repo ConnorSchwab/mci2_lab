@@ -63,7 +63,7 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
   }
   function reset(ti) {
     if (ti === identifier) {
-      isTouched = false;
+      //isTouched = false;
       identifier = undefined;
       isDeleted = true;
     }

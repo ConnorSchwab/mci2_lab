@@ -1,7 +1,6 @@
 
 import * as I from "./touches.mjs";
 import { startButton } from "./startButton.mjs"
-import { startButton } from "./startButton.mjs"
 
 export let checkTouched = undefined;
 export let currentTouchX = undefined;

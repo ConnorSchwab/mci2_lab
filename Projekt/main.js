@@ -3,11 +3,9 @@ import * as G from "./graphics.mjs";
 import { cannon } from "./cannon.mjs";
 import { projectiles } from "./projectiles.mjs";
 import { startButton, gotClicked } from "./startButton.mjs";
-import { startButton, gotClicked } from "./startButton.mjs";
 import createUIOverlay from "./uiOverlay.js";
 
 let spawnProjectiles = undefined;
-let firstTime = true;
 let firstTime = true;
 
 window.onload = function () {
@@ -20,6 +18,7 @@ window.onload = function () {
   let frequency = 500;
   let projectilesArray = [];
   let projectileAngle = undefined;
+  let identifier = true;
 
   let score = 0;
 
@@ -42,7 +41,9 @@ window.onload = function () {
   function Replay() {
     document.getElementById('popup').style.display = "none";
     for (let i = 0; i < interactiveObjects.length; i++) {
-      interactiveObjects[i].reset();
+      interactiveObjects[i].reset(identifier);
+      overlay.resetScore();
+      overlay.resetLife();
     }
   }
 
@@ -166,11 +167,6 @@ window.onload = function () {
     initStartButton.draw(ctx);
   }
 
-  function drawStartButton(ctx) {
-    let initStartButton = startButton();
-    initStartButton.draw(ctx);
-  }
-
   spawn(levels);
   setInterval(() => {
     for (let i = 0; i < balloons.length; i++) {
@@ -202,8 +198,6 @@ window.onload = function () {
           interactiveObjects.splice(i, 1);
           overlay.setLife();
           if (overlay.setLife() === 0) {
-            overlay.resetScore();
-            overlay.resetLife();
             document.getElementById('popup').style.display = "flex";
             let popup_innerDiv = document.getElementById('popup_innerDiv');
             popup_innerDiv.appendChild(replay);
