@@ -53,3 +53,16 @@ export function initInteraction(ctx, interactiveObjects) {
 
   }
 }
+
+
+
+
+
+/* let cannonX = canvas.width / 2;
+    let cannonY = canvas.height - 30; // move to the tip of the cannon
+    let angle = 0;
+    const dx = touchX - cannonX;
+    const dy = touchY - cannonY;
+    angle = Math.atan2(dy, dx);
+    projectileAngle = angle + Math.PI / 2;
+    isRotated = true; */
