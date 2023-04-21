@@ -26,12 +26,35 @@ window.onload = function () {
   let balloons = [];
   let levels = 8;
 
+  const replay = generateButton("Replay", "btn_replay");
 
   let overlay = createUIOverlay(ctx, canvas);
 
   G.initGraphics(draw, interactiveObjects);
 
   console.log(gotClicked);
+
+  replay.addEventListener("click", () => {
+    Replay();
+  });
+
+  function Replay() {
+    document.getElementById('popup').style.display = "none";
+    interactiveObjects.reset();
+  }
+
+  function generateButton(text, id) {
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.innerText = text;
+
+    if (id) {
+      button.id = id;
+    }
+    return button;
+  }
 
   let projectileX = canvas.width / 2;
   let projectileY = canvas.height - 30;
@@ -169,7 +192,16 @@ window.onload = function () {
         if (interactiveObjects[i].getPosition && interactiveObjects[i].getPosition().y < 0) {
           interactiveObjects.splice(i, 1);
           overlay.setLife();
+          if (overlay.setLife() === 0) {
+            overlay.resetScore();
+            overlay.resetLife();
+            document.getElementById('popup').style.display = "flex";
+            let popup_innerDiv = document.getElementById('popup_innerDiv');
+            popup_innerDiv.appendChild(replay);
+            break;
+          }
         }
+
         //!interactiveObjects[i].isDeleted()
         if (interactiveObjects[i]) {
           interactiveObjects[i].draw(ctx);
@@ -193,6 +225,7 @@ window.onload = function () {
       }
 
 
-
     }
-  };
+
+  }
+};

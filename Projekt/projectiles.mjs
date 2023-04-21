@@ -8,6 +8,7 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
   currentX = x;
   currentY = y;
   projectileAngle = angle;
+  let identifier = undefined;
 
   function draw(ctx) {
     const projectilePath = new Path2D();
@@ -57,7 +58,13 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
     }
     return false;
   }
-  function reset() { }
+  function reset(ti) {
+    if (ti === identifier) {
+      isTouched = false;
+      identifier = undefined;
+      isDeleted = true;
+    }
+  }
 
   return { draw, update, isDeleted, move, isInside, reset, getCoordinates, getPosition };
 }
