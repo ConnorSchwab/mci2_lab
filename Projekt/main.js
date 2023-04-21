@@ -3,6 +3,7 @@ import * as G from "./graphics.mjs";
 import { cannon } from "./cannon.mjs";
 import { projectiles } from "./projectiles.mjs";
 import { startButton, gotClicked } from "./startButton.mjs";
+import createUIOverlay from "./uiOverlay.js";
 
 let spawnProjectiles = undefined;
 let firstTime = true;
@@ -20,7 +21,9 @@ window.onload = function () {
 
   let interactiveObjects = [];
   let balloons = [];
-  let levels = 8;
+  let levels = 5;
+
+  let overlay = createUIOverlay(ctx, canvas);
 
   G.initGraphics(draw, interactiveObjects);
 
@@ -151,6 +154,8 @@ window.onload = function () {
     if (!gotClicked) {
       drawStartButton(ctx);
     } else {
+      overlay.draw();
+      overlay.setScore(score);
       spawnProjectiles = G.checkTouched;
       //console.log(score);
       createProjectile();
@@ -159,15 +164,20 @@ window.onload = function () {
 
       for (let i = 0; i < interactiveObjects.length; i++) {
         if (!interactiveObjects[i].isDeleted()) {
-          interactiveObjects[i].draw(ctx);
-          interactiveObjects[i].move();
-          let projectilePosition = interactiveObjects[i].getCoordinates();
-          if (projectilePosition.b) {
-            for (let j = 0; j < interactiveObjects.length; j++) {
-              interactiveObjects[j].isInside(
-                projectilePosition.x,
-                projectilePosition.y
-              );
+          if (interactiveObjects[i].outOfBounds()) {
+            interactiveObjects.splice(i, 1);
+            overlay.setLife();
+          } else {
+            interactiveObjects[i].draw(ctx);
+            interactiveObjects[i].move();
+            let projectilePosition = interactiveObjects[i].getCoordinates();
+            if (projectilePosition.b) {
+              for (let j = 0; j < interactiveObjects.length; j++) {
+                interactiveObjects[j].isInside(
+                  projectilePosition.x,
+                  projectilePosition.y
+                );
+              }
             }
           }
         } else {
