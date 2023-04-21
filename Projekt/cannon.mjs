@@ -1,4 +1,4 @@
-import { initInteraction } from "./touches.mjs";
+import { projectiles } from "./projectiles.mjs";
 
 const canvas = document.getElementById("canvas");
 let scale = 10;
@@ -6,7 +6,7 @@ let transform = undefined;
 let idle = Math.PI;
 let cannonAngle = 0;
 
-export function cannon() {
+export function cannon(ctx) {
   function draw(ctx) {
     let cannonX = canvas.width / 2;
     let cannonY = canvas.height;
@@ -43,12 +43,16 @@ export function cannon() {
   function shoot() {}
   function move() {}
   function isInside() {}
-  function isDeleted() {}
+  function isDeleted() {return false;}
   function reset() {}
+
+  function getCannonAngle(){
+    return cannonAngle;
+  }
 
   function update(id, touchX, touchY) {
     let cannonX = canvas.width / 2;
-    let cannonY = canvas.height - 1 *scale;
+    let cannonY = canvas.height -1 *scale;
     let angle = 0;
     const dx = touchX - cannonX;
     const dy = touchY - cannonY;
@@ -56,5 +60,7 @@ export function cannon() {
     cannonAngle = angle + Math.PI/2;
   }
 
-  return { draw, update, isDeleted, move, isInside, reset };
+  const projectileObj = projectiles(ctx, transform);
+
+  return { draw, update, isDeleted, move, isInside, reset, getCannonAngle };
 }
