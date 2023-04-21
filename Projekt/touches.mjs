@@ -9,11 +9,10 @@ export function initInteraction(ctx, interactiveObjects) {
 
     // changedTouches: array; for X of Array: X: content;
     for (let t of evt.changedTouches) {
-      console.log(`start ${t.identifier} at ${t.pageX}, ${t.pageY}`);
+      //console.log(`start ${t.identifier} at ${t.pageX}, ${t.pageY}`);
       touches[t.identifier] = { x: t.pageX, y: t.pageY };
       isTouched = true;
       for (let io of interactiveObjects) {
-        io.isInside(ctx, t.identifier, t.pageX, t.pageY);
         io.update(t.identifier, t.pageX, t.pageY);
       }
     }
@@ -22,7 +21,7 @@ export function initInteraction(ctx, interactiveObjects) {
   canvas.addEventListener("touchmove", (evt) => {
     evt.preventDefault();
     for (let t of evt.changedTouches) {
-      console.log(`move ${t.identifier} at ${t.pageX}, ${t.pageY}`);
+      //console.log(`move ${t.identifier} at ${t.pageX}, ${t.pageY}`);
       touches[t.identifier] = { x: t.pageX, y: t.pageY };
 
       for (let io of interactiveObjects) {
@@ -36,7 +35,7 @@ export function initInteraction(ctx, interactiveObjects) {
 
     for (let t of evt.changedTouches) {
       isTouched = false;
-      console.log(`end ${t.identifier} at ${t.pageX}, ${t.pageY}`);
+      //console.log(`end ${t.identifier} at ${t.pageX}, ${t.pageY}`);
       delete touches[t.identifier];
       for (let io of interactiveObjects) {
         io.reset(t.identifier);

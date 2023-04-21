@@ -11,11 +11,12 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
 
   function draw(ctx) {
     const projectilePath = new Path2D();
-    projectilePath.moveTo(-0.5, 0);
-    projectilePath.lineTo(-0.5, 3);
-    projectilePath.lineTo(0.5, 3);
-    projectilePath.lineTo(0.5, 0);
-    projectilePath.lineTo(-0.5, 0);
+    projectilePath.moveTo(-0.3, 0);
+    projectilePath.lineTo(-0.3, 3);
+    projectilePath.lineTo(0.3, 3);
+    projectilePath.lineTo(0.3, 0);
+    projectilePath.lineTo(0, -1);
+    projectilePath.lineTo(-0.3, 0);
     projectilePath.closePath();
     ctx.save();
     ctx.translate(currentX, currentY);
@@ -33,6 +34,13 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
     currentX += velocityX;
     currentY += velocityY;
   }
+  function getCoordinates(){
+    let tipX = currentX + Math.cos(projectileAngle);
+    let tipY = currentY + Math.sin(projectileAngle)* (-1 * scale);
+
+    let coordinates = {x: tipX, y:tipY, b: true};
+    return coordinates;
+  }
 
   function update() {}
   function isInside() {}
@@ -48,5 +56,5 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
   }
   function reset() {}
 
-  return { draw, update, isDeleted, move, isInside, reset };
+  return { draw, update, isDeleted, move, isInside, reset, getCoordinates};
 }

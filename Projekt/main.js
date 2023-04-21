@@ -1,7 +1,8 @@
-import { balloon } from "./balloons.mjs";
+import { balloon, score } from "./balloons.mjs";
 import * as G from "./graphics.mjs";
 import { cannon } from "./cannon.mjs";
 import { projectiles } from "./projectiles.mjs";
+
 
 let spawnProjectiles = undefined;
 
@@ -62,7 +63,6 @@ window.onload = function () {
         );
         projectilesArray.splice(j, 1);
       }
-      console.log(projectilesArray);
     }
   }
 
@@ -86,11 +86,9 @@ window.onload = function () {
     return balloons;
   }
 
-  console.log(spawnProjectiles);
 
   function getProjectileOffset(checkValue) {
     if (!checkValue) {
-      console.log(cannonX);
       return cannonX + Math.cos(getProjectileAtan(G.currentTouchX, G.currentTouchY)) * 8 *cannonScale;
     } else {
       return cannonY + Math.sin(getProjectileAtan(G.currentTouchX, G.currentTouchY)) * 8 *  cannonScale;
@@ -135,6 +133,7 @@ window.onload = function () {
 
   function draw(ctx, deltaTime) {
     spawnProjectiles = G.checkTouched;
+    console.log(score);
     createProjectile();
     checkForProjectiles();
     // load projetiles as InterObjects and free the projectilesArray
@@ -143,6 +142,12 @@ window.onload = function () {
       if (!interactiveObjects[i].isDeleted()) {
         interactiveObjects[i].draw(ctx);
         interactiveObjects[i].move();
+        let projectilePosition = interactiveObjects[i].getCoordinates();
+        if (projectilePosition.b){
+          for (let j = 0; j < interactiveObjects.length; j++){
+            interactiveObjects[j].isInside(projectilePosition.x, projectilePosition.y);
+          }
+        }
       } else {
         interactiveObjects.splice(i, 1);
       }

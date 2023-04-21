@@ -40,6 +40,10 @@ export function cannon(ctx) {
     ctx.restore();
   }
 
+  function getCoordinates(){
+    let dummy = {b: false};
+    return dummy;
+  }
   function shoot() {}
   function move() {}
   function isInside() {}
@@ -62,5 +66,5 @@ export function cannon(ctx) {
 
   const projectileObj = projectiles(ctx, transform);
 
-  return { draw, update, isDeleted, move, isInside, reset, getCannonAngle };
+  return { draw, update, isDeleted, move, isInside, reset, getCannonAngle, getCoordinates };
 }
