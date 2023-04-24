@@ -1,4 +1,5 @@
 export let isTouched = undefined;
+import {startButton} from "./startButton.mjs"
 export function initInteraction(ctx, interactiveObjects) {
   const canvas = ctx.canvas;
   let touches = {};
@@ -35,6 +36,7 @@ export function initInteraction(ctx, interactiveObjects) {
 
     for (let t of evt.changedTouches) {
       isTouched = false;
+      startButton().isInside(t.identifier, t.pageX, t.pageY);
       //console.log(`end ${t.identifier} at ${t.pageX}, ${t.pageY}`);
       delete touches[t.identifier];
       for (let io of interactiveObjects) {
