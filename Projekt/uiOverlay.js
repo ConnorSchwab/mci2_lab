@@ -49,7 +49,7 @@ function createUIOverlay(ctx, cnv) {
         ctx.strokeRect(margin - ctx.lineWidth, margin - ctx.lineWidth, cnv.width - margin * 2 - ctx.lineWidth * 2, cnv.height - margin * 2 - ctx.lineWidth * 2);
         ctx.font = cnv.width / 75 + "px Roboto"
         ctx.fillText(`${score} Pts`, margin * 2 + ctx.lineWidth, margin * 2 + ctx.lineWidth);
-        ctx.fillText(`Level ${level}`, cnv.width - margin * 2 - 50 - ctx.lineWidth, margin * 2 + ctx.lineWidth);
+        ctx.fillText(`Level ${level}`, cnv.width - margin * 3 - 50 - ctx.lineWidth, margin * 2 + ctx.lineWidth);
         ctx.fillText(`${life} Life`, cnv.width - margin * 2 - 50 - ctx.lineWidth * 2, cnv.height - margin * 2 - ctx.lineWidth * 2);
 
         ctx.restore();
