@@ -8,10 +8,13 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
   currentX = x;
   currentY = y;
   projectileAngle = angle;
+  let identifier = undefined;
 
   function draw(ctx) {
     const projectilePath = new Path2D();
     projectilePath.moveTo(-0.3, 0);
+    projectilePath.lineTo(-0.3, 2);
+    projectilePath.lineTo(0.3, 2);
     projectilePath.lineTo(-0.3, 2);
     projectilePath.lineTo(0.3, 2);
     projectilePath.lineTo(0.3, 0);
@@ -34,17 +37,20 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
     currentX += velocityX;
     currentY += velocityY;
   }
-  function getCoordinates(){
+  function getCoordinates() {
     let tipX = currentX + Math.cos(projectileAngle);
-    let tipY = currentY + Math.sin(projectileAngle)* (-1 * scale);
+    let tipY = currentY + Math.sin(projectileAngle) * (-1 * scale);
 
-    let coordinates = {x: tipX, y:tipY, b: true};
+    let coordinates = { x: tipX, y: tipY, b: true };
     return coordinates;
   }
 
-  function update() {}
-  function outOfBounds(){return false;}
-  function isInside() {}
+  function update() { }
+  function outOfBounds() { return false; }
+  function isInside() { }
+  function getPosition() {
+    return { x, y };
+  }
   function isDeleted() {
     if (
       currentX >= canvas.width + scale ||
@@ -55,7 +61,13 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
     }
     return false;
   }
-  function reset() {}
+  function reset(ti) {
+    if (ti === identifier) {
+      //isTouched = false;
+      identifier = undefined;
+      isDeleted = true;
+    }
+  }
 
-  return { draw, update, isDeleted, move, isInside, reset, getCoordinates, outOfBounds};
+  return { draw, update, isDeleted, move, isInside, reset, getCoordinates, outOfBounds, getPosition };
 }
