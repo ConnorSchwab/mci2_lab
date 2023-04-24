@@ -24,13 +24,16 @@ window.onload = function () {
 
   let interactiveObjects = [];
   let balloons = [];
-  let levels = 8;
-
+  let levelsArray = [3, 5, 7, 9, 12, 15, 18, 21, 24, 27, 30]; // 10 Levels
+  let currentLevel = levelsArray[0];
+  let levelIndex = 0;
+  let previousScoring = 0;
+  let levelCount = 1;
+  let livesLost = 0;
   const replay = generateButton("Replay", "btn_replay");
 
-  let overlay = createUIOverlay(ctx, canvas);
-
   G.initGraphics(draw, interactiveObjects);
+  let overlay = createUIOverlay(ctx, canvas);
 
   console.log(gotClicked);
 
@@ -63,7 +66,7 @@ window.onload = function () {
   let projectileX = canvas.width / 2;
   let projectileY = canvas.height - 30;
   let middlePoint = { x: canvas.width / 2, y: canvas.height / 2 };
-  let maxRadius = Math.min(canvas.width, canvas.height) / 4;
+  let maxRadius = Math.min(canvas.width, canvas.height) / 2;
   let cannonScale = 10;
   let cannonX = canvas.width / 2;
   let cannonY = canvas.height;
@@ -78,7 +81,7 @@ window.onload = function () {
 
   function getProjectileAtan(touchX, touchY) {
     let spawnX = canvas.width / 2;
-    let spawnY = canvas.height; // move to the tip of the cannon
+    let spawnY = canvas.height;
     let angle = 0;
     const dx = touchX - spawnX;
     const dy = touchY - spawnY;
@@ -107,7 +110,7 @@ window.onload = function () {
 
   interactiveObjects.push(cannon(ctx));
 
-  function spawn(lvl) {
+  function createBalloons(lvl) {
     for (let i = 0; i < lvl; i++) {
       const xSpawn = middlePoint.x + (Math.random() - 0.5) * maxRadius;
       const ySpawn = middlePoint.y + (Math.random() - 0.5) * maxRadius;
@@ -167,16 +170,23 @@ window.onload = function () {
     initStartButton.draw(ctx);
   }
 
-  spawn(levels);
   setInterval(() => {
     for (let i = 0; i < balloons.length; i++) {
       balloons[i].direction = getRandomDirection();
     }
   }, 1000);
-  for (let o of balloons) {
-    interactiveObjects.push(balloon(o.x, o.y, o.radius, o.direction));
+
+  function pushBalloons() {
+    for (let o of balloons) {
+      interactiveObjects.push(balloon(o.x, o.y, o.radius, o.direction));
+    }
   }
 
+  function clearBalloons() {
+    balloons = [];
+  }
+  createBalloons(currentLevel);
+  pushBalloons();
   function getRandomDirection() {
     return Math.floor(Math.random() * 4);
   }
@@ -188,6 +198,17 @@ window.onload = function () {
       overlay.draw();
       overlay.setScore(score);
       spawnProjectiles = G.checkTouched;
+      if (score + livesLost - previousScoring === currentLevel) {
+        levelCount++;
+        clearBalloons();
+        if (levelIndex < 11) {
+          levelIndex++;
+        }
+        previousScoring += currentLevel;
+        currentLevel = levelsArray[levelIndex];
+        createBalloons(currentLevel);
+        pushBalloons();
+      }
       //console.log(score);
       createProjectile();
       checkForProjectiles();

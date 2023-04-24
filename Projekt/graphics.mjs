@@ -29,6 +29,7 @@ export function initGraphics(drawcallback, interactiveObjects) {
   const startTime = new Date();
 
   function mainloop() {
+
     const deltaTime = new Date() - startTime;
     ctx.resetTransform();
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
