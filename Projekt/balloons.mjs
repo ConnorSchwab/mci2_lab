@@ -93,6 +93,7 @@ export function balloon(x, y, radius, direction) {
       deleted = true;
     }
   }
+
   function isDeleted() {
     return deleted;
   }

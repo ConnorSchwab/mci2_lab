@@ -43,11 +43,13 @@ window.onload = function () {
 
   function Replay() {
     document.getElementById('popup').style.display = "none";
-    for (let i = 0; i < interactiveObjects.length; i++) {
-      interactiveObjects[i].reset(identifier);
-      overlay.resetScore();
-      overlay.resetLife();
-    }
+    interactiveObjects = [];
+    interactiveObjects.push(cannon(ctx));
+    overlay.resetLevel();
+    overlay.resetScore();
+    overlay.resetLife();
+    createBalloons(1);
+    pushBalloons();
   }
 
   function generateButton(text, id) {
@@ -186,7 +188,9 @@ window.onload = function () {
     balloons = [];
   }
   createBalloons(currentLevel);
+
   pushBalloons();
+
   function getRandomDirection() {
     return Math.floor(Math.random() * 4);
   }
@@ -200,6 +204,7 @@ window.onload = function () {
       spawnProjectiles = G.checkTouched;
       if (score + livesLost - previousScoring === currentLevel) {
         levelCount++;
+        overlay.setLevel(levelCount);
         clearBalloons();
         if (levelIndex < 11) {
           levelIndex++;
@@ -218,7 +223,7 @@ window.onload = function () {
         if (interactiveObjects[i].getPosition && interactiveObjects[i].getPosition().y < 0) {
           interactiveObjects.splice(i, 1);
           overlay.setLife();
-          if (overlay.setLife() === 0) {
+          if (overlay.getLife() === 0) {
             document.getElementById('popup').style.display = "flex";
             let popup_innerDiv = document.getElementById('popup_innerDiv');
             popup_innerDiv.appendChild(replay);

@@ -22,11 +22,12 @@ function createUIOverlay(ctx, cnv) {
         if (life > 0) {
             life -= 1;
         }
-        else {
-            return life;
-        }
-
     }
+
+    function getLife() {
+        return life;
+    }
+
     function setLevel(levels) {
         level = levels;
     }
@@ -55,7 +56,7 @@ function createUIOverlay(ctx, cnv) {
     }
 
     return {
-        draw, setScore, resetScore, setLife, resetLife, setLevel, resetLevel
+        draw, setScore, resetScore, setLife, resetLife, setLevel, resetLevel, getLife
     }
 }
 
