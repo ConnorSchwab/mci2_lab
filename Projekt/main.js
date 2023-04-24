@@ -44,11 +44,16 @@ window.onload = function () {
   function Replay() {
     document.getElementById('popup').style.display = "none";
     interactiveObjects = [];
+    clearBalloons();
     interactiveObjects.push(cannon(ctx));
     overlay.resetLevel();
+    levelCount = 1;
+    levelIndex = 0;
+    score = 0;
+    currentLevel = levelsArray[levelIndex];
     overlay.resetScore();
     overlay.resetLife();
-    createBalloons(1);
+    createBalloons(currentLevel);
     pushBalloons();
   }
 
@@ -223,6 +228,7 @@ window.onload = function () {
         if (interactiveObjects[i].getPosition && interactiveObjects[i].getPosition().y < 0) {
           interactiveObjects.splice(i, 1);
           overlay.setLife();
+          livesLost += 1;
           if (overlay.getLife() === 0) {
             document.getElementById('popup').style.display = "flex";
             let popup_innerDiv = document.getElementById('popup_innerDiv');
