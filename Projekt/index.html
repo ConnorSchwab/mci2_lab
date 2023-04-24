@@ -6,6 +6,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>JS Live Server</title>
+    <style>
+        * {
+            margin: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #cnv {
+            padding: 0;
+            margin: 0;
+            background-color: rgb(255, 255, 255);
+        }
+
+        #popup {
+            position: absolute;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        #popup>div {
+            width: 15em;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 3em;
+            text-align: center;
+            border-radius: 0.5em;
+            border: 1px solid black;
+        }
+
+        #popup>div>div {
+            margin: 1em;
+            color: black;
+            font-size: xx-large;
+        }
+        #btn_replay{
+            background-color: #000000; /* set background color */
+            border: none; /* remove border */
+            color: white; /* set text color */
+            padding: 12px 24px; /* set padding */
+            text-align: center; /* center text */
+            text-decoration: none; /* remove underline */
+            display: inline-block; /* set display to inline block */
+            font-size: 16px; /* set font size */
+            margin: 4px 2px; /* set margin */
+            cursor: pointer; /* change cursor to pointer on hover */
+            border-radius: 4px; /* add rounded corners */
+        }
+    
+    </style>
 </head>
 <body>
     <script type="module" src="main.js"></script>

@@ -22,8 +22,8 @@ export function balloon(x, y, radius, direction) {
       path.lineTo(x, y + radius * 5.1);
       path.lineTo(x + radius / 4, y + radius * 4.8);
       path.lineTo(x, y + radius * 4.5);
-      ctx.fillStyle = "#A03B3F";
-      ctx.strokeStyle = "#FF000A";
+      ctx.fillStyle = "#A60F55";
+      ctx.strokeStyle = "#F21313";
       ctx.fill(path);
       ctx.stroke(path);
       transform = ctx.getTransform();

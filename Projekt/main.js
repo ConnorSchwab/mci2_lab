@@ -13,7 +13,7 @@ window.onload = function () {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
 
-  const projectileSpeed = 5;
+  const projectileSpeed = 4;
   let lastShot = 0;
   let frequency = 500;
   let projectilesArray = [];
@@ -32,6 +32,44 @@ window.onload = function () {
   let overlay = createUIOverlay(ctx, canvas);
 
   console.log(gotClicked);
+
+  replay.addEventListener("click", () => {
+    Replay();
+  });
+
+  function Replay() {
+    document.getElementById('popup').style.display = "none";
+    interactiveObjects = [];
+    clearBalloons();
+    interactiveObjects.push(cannon(ctx));
+    overlay.resetLevel();
+    levelCount = 1;
+    previousScoring = 0;
+    levelIndex = 0;
+    score = 0;
+    livesLost = 0;
+    currentLevel = levelsArray[levelIndex];
+    overlay.resetScore();
+    overlay.resetLife();
+    createBalloons(currentLevel);
+    pushBalloons();
+  }
+
+  function generateButton(text, id) {
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.innerText = text;
+
+    if (id) {
+      button.id = id;
+    }
+    return button;
+  }
+
+  let projectileX = canvas.width / 2;
+  let projectileY = canvas.height - 30;
   let middlePoint = { x: canvas.width / 2, y: canvas.height / 2 };
   let maxRadius = Math.min(canvas.width, canvas.height) / 2;
   let cannonScale = 10;
@@ -165,10 +203,10 @@ window.onload = function () {
       overlay.draw();
       overlay.setScore(score);
       spawnProjectiles = G.checkTouched;
-      if (score + livesLost - previousScoring === currentLevel) {
+      if (score + livesLost - previousScoring === currentLevel && overlay.getLife() != 0) {
         levelCount++;
         clearBalloons();
-        if (levelIndex < 11) {
+        if (levelIndex < 10) {
           levelIndex++;
         }
         previousScoring += currentLevel;
@@ -182,21 +220,31 @@ window.onload = function () {
       // load projetiles as InterObjects and free the projectilesArray
 
       for (let i = 0; i < interactiveObjects.length; i++) {
-        if (!interactiveObjects[i].isDeleted()) {
-          if (interactiveObjects[i].outOfBounds()) {
-            interactiveObjects.splice(i, 1);
-            overlay.setLife();
-            livesLost++;
-          } else {
-            interactiveObjects[i].draw(ctx);
-            interactiveObjects[i].move();
-            let projectilePosition = interactiveObjects[i].getCoordinates();
-            if (projectilePosition.b) {
-              for (let j = 0; j < interactiveObjects.length; j++) {
-                interactiveObjects[j].isInside(
-                  projectilePosition.x,
-                  projectilePosition.y
-                );
+        if (interactiveObjects[i].outOfBounds()) {
+          interactiveObjects.splice(i, 1);
+          overlay.setLife();
+          livesLost += 1;
+          if (overlay.getLife() === 0) {
+            interactiveObjects = [];
+            document.getElementById('popup').style.display = "flex";
+            let popup_innerDiv = document.getElementById('popup_innerDiv');
+            popup_innerDiv.appendChild(replay);
+            break;
+          }
+        }
+
+        //!interactiveObjects[i].isDeleted()
+        if (interactiveObjects[i]) {
+          interactiveObjects[i].draw(ctx);
+          interactiveObjects[i].move();
+          let projectilePosition = interactiveObjects[i].getCoordinates();
+          if (projectilePosition.b) {
+            for (let j = 0; j < interactiveObjects.length; j++) {
+              let deleted = interactiveObjects[j].isInside(projectilePosition.x, projectilePosition.y);
+              if (deleted) {
+                interactiveObjects.splice(j, 1);
+                score++;
+                overlay.setScore(score);
               }
             }
           }

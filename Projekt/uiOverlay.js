@@ -22,8 +22,8 @@ function createUIOverlay(ctx, cnv) {
         ctx.save();
 
         ctx.resetTransform();
-        ctx.strokeStyle = "#ffbb00";
-        ctx.fillStyle = "#ffbb00";
+        ctx.strokeStyle = "#F2E857";
+        ctx.fillStyle = "##F2D399";
         ctx.lineWidth = margin * 0.2;
 
         ctx.strokeRect(margin - ctx.lineWidth, margin - ctx.lineWidth, cnv.width - margin * 2 - ctx.lineWidth * 2, cnv.height - margin * 2 - ctx.lineWidth * 2);

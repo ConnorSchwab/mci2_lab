@@ -11,12 +11,14 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
 
   function draw(ctx) {
     const projectilePath = new Path2D();
-    projectilePath.moveTo(-0.3, 0);
-    projectilePath.lineTo(-0.3, 2);
-    projectilePath.lineTo(0.3, 2);
-    projectilePath.lineTo(0.3, 0);
+    projectilePath.moveTo(-0.2, 0);
+    projectilePath.lineTo(-0.2, 2);
+    projectilePath.lineTo(0.2, 2);
+    projectilePath.lineTo(-0.2, 2);
+    projectilePath.lineTo(0.2, 2);
+    projectilePath.lineTo(0.2, 0);
     projectilePath.lineTo(0, -1);
-    projectilePath.lineTo(-0.3, 0);
+    projectilePath.lineTo(-0.2, 0);
     projectilePath.closePath();
     ctx.save();
     ctx.translate(currentX, currentY);
@@ -36,7 +38,7 @@ export function projectiles(x, y, angle, velocityX, velocityY) {
   }
   function getCoordinates(){
     let tipX = currentX + Math.cos(projectileAngle);
-    let tipY = currentY + Math.sin(projectileAngle)* (-1 * scale);
+    let tipY = currentY -1 + Math.sin(projectileAngle) //* (-1 * scale);
 
     let coordinates = {x: tipX, y:tipY, b: true};
     return coordinates;
