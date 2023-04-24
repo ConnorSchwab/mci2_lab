@@ -1,6 +1,6 @@
 
 import * as I from "./touches.mjs";
-import {startButton} from "./startButton.mjs"
+
 
 export let checkTouched = undefined;
 export let currentTouchX = undefined;
@@ -29,6 +29,7 @@ export function initGraphics(drawcallback, interactiveObjects) {
   const startTime = new Date();
 
   function mainloop() {
+    
     const deltaTime = new Date() - startTime;
     ctx.resetTransform();
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -48,7 +49,7 @@ export function initGraphics(drawcallback, interactiveObjects) {
       /*circle(ctx, x, y, 30, "red");
       ctx.fillStyle = "black";
       ctx.fillText(`id: ${identifier}`, x + 40, y);*/
-      startButton().isInside(identifier, x, y);
+      
       
     });
 
