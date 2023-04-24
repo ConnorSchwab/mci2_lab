@@ -13,7 +13,7 @@ window.onload = function () {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
 
-  const projectileSpeed = 5;
+  const projectileSpeed = 4;
   let lastShot = 0;
   let frequency = 500;
   let projectilesArray = [];
@@ -50,6 +50,8 @@ window.onload = function () {
     levelCount = 1;
     levelIndex = 0;
     score = 0;
+    previousScoring = 0;
+    livesLost = 0;
     currentLevel = levelsArray[levelIndex];
     overlay.resetScore();
     overlay.resetLife();
@@ -207,7 +209,7 @@ window.onload = function () {
       overlay.draw();
       overlay.setScore(score);
       spawnProjectiles = G.checkTouched;
-      if (score + livesLost - previousScoring === currentLevel) {
+      if (score + livesLost - previousScoring === currentLevel && overlay.getLife() != 0) {
         levelCount++;
         overlay.setLevel(levelCount);
         clearBalloons();
@@ -225,11 +227,13 @@ window.onload = function () {
       // load projetiles as InterObjects and free the projectilesArray
 
       for (let i = 0; i < interactiveObjects.length; i++) {
-        if (interactiveObjects[i].getPosition && interactiveObjects[i].getPosition().y < 0) {
+        if (interactiveObjects[i].outOfBounds()) {
           interactiveObjects.splice(i, 1);
           overlay.setLife();
           livesLost += 1;
           if (overlay.getLife() === 0) {
+            interactiveObjects=[];
+            clearBalloons();
             document.getElementById('popup').style.display = "flex";
             let popup_innerDiv = document.getElementById('popup_innerDiv');
             popup_innerDiv.appendChild(replay);

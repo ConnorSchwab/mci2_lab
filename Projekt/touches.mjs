@@ -1,5 +1,5 @@
 export let isTouched = undefined;
-import {startButton} from "./startButton.mjs"
+import { startButton, gotClicked } from "./startButton.mjs";
 export function initInteraction(ctx, interactiveObjects) {
   const canvas = ctx.canvas;
   let touches = {};
@@ -12,7 +12,10 @@ export function initInteraction(ctx, interactiveObjects) {
     for (let t of evt.changedTouches) {
       //console.log(`start ${t.identifier} at ${t.pageX}, ${t.pageY}`);
       touches[t.identifier] = { x: t.pageX, y: t.pageY };
-      isTouched = true;
+      if (gotClicked) { // && t.identifier === 1
+        isTouched = true;
+      }
+
       for (let io of interactiveObjects) {
         io.update(t.identifier, t.pageX, t.pageY);
       }
@@ -35,7 +38,7 @@ export function initInteraction(ctx, interactiveObjects) {
     evt.preventDefault();
 
     for (let t of evt.changedTouches) {
-      isTouched = false;
+      isTouched = false; // if t.identifier === 1
       startButton().isInside(t.identifier, t.pageX, t.pageY);
       //console.log(`end ${t.identifier} at ${t.pageX}, ${t.pageY}`);
       delete touches[t.identifier];
@@ -52,13 +55,8 @@ export function initInteraction(ctx, interactiveObjects) {
       // Übergabe an Callback: t: identifier, x/y-Koordinaten
       cb(t, touches[t].x, touches[t].y);
     }
-
-  }
+  };
 }
-
-
-
-
 
 /* let cannonX = canvas.width / 2;
     let cannonY = canvas.height - 30; // move to the tip of the cannon

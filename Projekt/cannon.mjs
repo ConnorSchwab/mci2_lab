@@ -11,9 +11,8 @@ export function cannon(ctx) {
     let cannonX = canvas.width / 2;
     let cannonY = canvas.height;
     const cannonPath = new Path2D();
-    cannonPath.moveTo(-4, -3);
-    cannonPath.lineTo(-4, 0);
-    cannonPath.lineTo(-4, 1);
+    cannonPath.moveTo(-3, -6);
+    cannonPath.lineTo(-3, 1);
     cannonPath.lineTo(-1.5, 1.5);
     cannonPath.lineTo(-1.5, 3);
     cannonPath.lineTo(-0.5, 4);
@@ -22,10 +21,9 @@ export function cannon(ctx) {
     cannonPath.lineTo(0.5, 4);
     cannonPath.lineTo(1.5, 3);
     cannonPath.lineTo(1.5, 1.5);
-    cannonPath.lineTo(4, 1);
-    cannonPath.lineTo(4, 0);
-    cannonPath.lineTo(4, -3);
-    cannonPath.lineTo(-4, -3);
+    cannonPath.lineTo(3, 1);
+    cannonPath.lineTo(3, -6);
+    cannonPath.lineTo(-3, -6);
     cannonPath.closePath();
     ctx.save();
     ctx.translate(cannonX, cannonY);
@@ -33,7 +31,7 @@ export function cannon(ctx) {
     ctx.scale(scale, scale);
     ctx.lineWidth = 1 / scale;
     ctx.fillStyle = "#000";
-    ctx.strokeStyle = "#ff0";
+    ctx.strokeStyle = "#F2D399";
     ctx.fill(cannonPath);
     ctx.stroke(cannonPath);
     transform = ctx.getTransform();
