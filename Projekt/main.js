@@ -214,7 +214,7 @@ window.onload = function () {
         levelCount++;
         overlay.setLevel(levelCount);
         clearBalloons();
-        if (levelIndex < 11) {
+        if (levelIndex < 9) {
           levelIndex++;
         }
         previousScoring += currentLevel;
