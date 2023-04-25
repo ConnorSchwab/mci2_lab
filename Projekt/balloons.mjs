@@ -64,24 +64,24 @@ export function balloon(x, y, radius, direction) {
     switch (direction) {
       case 1: {
         x += 0.3;
-        y -= 0.2;
+        y -= 0.3;
         break;
       }
 
       case 2: {
-        y -= 0.2;
+        y -= 0.3;
         x += 0.2;
         break;
       }
 
       case 3: {
         x -= 0.2;
-        y -= 0.2;
+        y -= 0.3;
         break;
       }
 
       default:
-        y -= 0.2;
+        y -= 0.3;
         x -= 0.3;
     }
   }
