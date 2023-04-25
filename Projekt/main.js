@@ -5,6 +5,7 @@ import { projectiles } from "./projectiles.mjs";
 import { startButton, gotClicked } from "./startButton.mjs";
 import createUIOverlay from "./uiOverlay.js";
 
+//github pages comment
 let spawnProjectiles = undefined;
 let firstTime = true;
 
